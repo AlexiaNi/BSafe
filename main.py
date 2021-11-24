@@ -33,18 +33,18 @@ button_menu.pack()
 #frame 2
 label_1 = tk.Label(frame_2, text="Selection draft", padx=0, pady=10, font=font1)
 label_1.pack()
-button_1 = tk.Button(frame_2, text="Option", font=font2, command=lambda:raise_frame(frame_3))
+button_1 = tk.Button(frame_2, text="Entry", font=font2, command=lambda:raise_frame(frame_3))
 button_1.pack()
 button_back = tk.Button(frame_2, text="Back to title screen",padx=0, pady=10, font=font2, command=lambda:raise_frame(frame_1))
 button_back.pack()
 
 #frame 3
-label_option_1 = tk.Label(frame_3, text="Enter option 1", font=font2)
+label_option_1 = tk.Label(frame_3, text="Enter adress", font=font2)
 label_option_1.pack()
 entry_option_1 = tk.Entry(frame_3, borderwidth=2.5)
 entry_option_1.pack()
 
-label_pass1= tk.Label(frame_3, text="Enter pass 1", font=font2)
+label_pass1= tk.Label(frame_3, text="Enter pass", font=font2)
 label_pass1.pack()
 entry_pass1 = tk.Entry(frame_3, borderwidth=2.5)
 entry_pass1.pack()
