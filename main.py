@@ -224,6 +224,18 @@ def show_one():
     select = ("SELECT *, oid from Passes WHERE oid = " + entry_show_ID.get())
     cursor.execute(select)
     values = cursor.fetchall()
+    if entry_show_ID.get().isnumeric() == True:
+       test2 = int(entry_show_ID.get())
+       test2_list=[]
+       test2_list.append(test2)
+       test2_tuple = tuple(test2_list)
+       bool_select2 = False
+       for value in values:
+           if sorted(test2_tuple) == sorted(value):
+               bool_select2 = True
+               break
+          
+
 
     print_value = ''
     for value in values:
@@ -231,8 +243,10 @@ def show_one():
 
     if entry_show_ID.get() == 0:
         messagebox.showwarning("Warning", "Must complete all fields")
-    elif entry_show_ID.get().isalnumeric() == True:
-        messagebox.showwarning("Warning")
+    elif entry_show_ID.get().isalnumeric() == False:
+        messagebox.showwarning("Warning", "Input must be a positive integer")
+    elif bool_select2 == False:
+        messagebox.showwarning("Warning", "Record ID out of range")
 
     global label_value
     label_value = tk.Label(frame_5, text=print_value, pady=10, font=font2)
