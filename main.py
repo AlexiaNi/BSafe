@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import ttk
 import tkinter.font as tkF
 import tkinter as GUI
 from tkinter import messagebox
@@ -24,7 +25,7 @@ def exit_program():
     main_screen.destroy()
 
 main_screen = tk.Tk()
-main_screen.title("Progam Draft")
+main_screen.title("Password Manager")
 main_screen.iconbitmap('bunny.ico')
 
 
@@ -44,7 +45,7 @@ for frame in (frame_1, frame_2, frame_3, frame_4, frame_5):
     frame.grid(row=1, column=1, sticky='news')
 
 #FRAME 1
-label_title = tk.Label(frame_1, text="Title screen draft",padx=0, pady=10, font=font1)
+label_title = tk.Label(frame_1, text="Password Manager",padx=0, pady=10, font=font1)
 label_title.pack()
 button_menu = tk.Button(frame_1, text="Menu", padx=20,pady=10, font=font2, command=lambda:raise_frame(frame_2))
 button_menu.pack()
@@ -55,20 +56,20 @@ button_exit.pack()
 
 
 #FRAME 2
-label_1 = tk.Label(frame_2, text="Selection draft", font=font1)
+label_1 = tk.Label(frame_2, text="Options", font=font1)
 label_1.pack()
-button_1 = tk.Button(frame_2, text="Add entry", font=font2, padx=68, pady=10, command=lambda:raise_frame(frame_3))
+button_1 = tk.Button(frame_2, text="Add record", font=font2, padx=68, pady=10, command=lambda:raise_frame(frame_3))
 button_1.pack()
-button_2 = tk.Button(frame_2, text="Modify/Delete entry", padx=25, pady=10, font=font2, command=lambda:raise_frame(frame_4))
+button_2 = tk.Button(frame_2, text="Modify/Delete record", padx=25, pady=10, font=font2, command=lambda:raise_frame(frame_4))
 button_2.pack()
-button_3  = tk.Button(frame_2,text="Show records", padx=54, pady=10, font=font2, command=lambda:raise_frame(frame_5))
+button_3  = tk.Button(frame_2,text="Show records", padx=60, pady=10, font=font2, command=lambda:raise_frame(frame_5))
 button_3.pack()
-button_back = tk.Button(frame_2, text="Back to title screen",padx=30, pady=10, font=font2, command=lambda:raise_frame(frame_1))
+button_back = tk.Button(frame_2, text="Back to title screen",padx=38, pady=10, font=font2, command=lambda:raise_frame(frame_1))
 button_back.pack()
 
 #FRAME 3
 
-label_master1 = tk.Label(frame_3, text="Add entry", font=font1)
+label_master1 = tk.Label(frame_3, text="Add record", font=font1)
 label_master1.pack()
 
 label_platform = tk.Label(frame_3, text="Enter Platform: ", font=font2)
@@ -113,13 +114,13 @@ def insert():
 #FRAME 3
 label_space1 = tk.Label(frame_3, text="    ", padx=105, pady=1, font=font2)
 label_space1.pack()
-button_insert = tk.Button(frame_3, text="Add entry to database", font=font2, padx=30, pady=10, command=insert)
+button_insert = tk.Button(frame_3, text="Add record to database", font=font2, padx=30, pady=10, command=insert)
 button_insert.pack()
-button_back = tk.Button(frame_3, text="Back", font=font2, padx=105, pady=10, command=lambda:raise_frame(frame_2))
+button_back = tk.Button(frame_3, text="Back", font=font2, padx=111, pady=10, command=lambda:raise_frame(frame_2))
 button_back.pack()
 
 #FRAME 4
-label_master2 = tk.Label(frame_4, text="Delete or modify entry", font=font1)
+label_master2 = tk.Label(frame_4, text="Delete or modify record", font=font1)
 label_master2.pack()
 label_select = tk.Label(frame_4, text="Record ID: ", font=font2)
 label_select.pack()
@@ -206,7 +207,46 @@ button_back1.pack()
 label_master3 = tk.Label(frame_5, text="View records", font=font1)
 label_master3.pack()
 
-button_show_all = tk.Button(frame_5, text="Show all records", padx=10, pady=10, font=font2)
+def show_all():
+    top = tk.Toplevel()
+    top.geometry("1000x400")
+    top.resizable(False, False)
+    top.title("All records")
+    top.iconbitmap('bunny.ico')
+
+    frame_scrollbar = tk.Frame(top)
+    frame_scrollbar.pack(fill=BOTH, expand=1)
+    canvas_scrollbar = tk.Canvas(frame_scrollbar)
+    canvas_scrollbar.pack(side=LEFT, fill=BOTH, expand=1)
+    scrollbar = ttk.Scrollbar(frame_scrollbar, orient=VERTICAL, command=canvas_scrollbar.yview)
+    scrollbar.pack(side=RIGHT, fill=Y)
+    canvas_scrollbar.configure(yscrollcommand=scrollbar.set)
+    canvas_scrollbar.bind('<Configure>', lambda e: canvas_scrollbar.configure(scrollregion = canvas_scrollbar.bbox("all")))
+    frame_scrollbar2 = tk.Frame(canvas_scrollbar)
+    canvas_scrollbar.create_window((0,0), window=frame_scrollbar2, anchor="nw")
+
+    connectivity = sqlite3.connect('Pass.db')
+
+    cursor = connectivity.cursor()
+
+    
+    select_all = """SELECT *, oid from Passes"""
+    cursor.execute(select_all)
+    values3 = cursor.fetchall()
+
+    print_value3 = ''
+    for value in values3:
+        print_value3 = ''
+        print_value3 +=  "Platform/Username: " + str(value[0]) + ", " + "URL: " + str(value[1]) + ", " + "Password: " + str(value[2]) + ", "  + "ID Number: " + str(value[3])
+        label_value3 = tk.Label(frame_scrollbar2, text=print_value3, pady=10)
+        label_value3.pack() 
+
+    cursor.close()
+
+    connectivity.commit()
+    connectivity.close()
+
+button_show_all = tk.Button(frame_5, text="Show all records", padx=10, pady=10, font=font2, command=show_all)
 button_show_all.pack()
 
 label_select1 = tk.Label(frame_5, text="Record ID:", font=font2)
@@ -216,51 +256,61 @@ entry_show_ID = tk.Entry(frame_5)
 entry_show_ID.pack()
 
 #DATABASE FUNCTION FRAME 5
+global label_value
 def show_one():
     connectivity = sqlite3.connect('Pass.db')
 
     cursor = connectivity.cursor()
 
-    select = ("SELECT *, oid from Passes WHERE oid = " + entry_show_ID.get())
-    cursor.execute(select)
+    select_copy = """SELECT oid from Passes"""
+    cursor.execute(select_copy)
     values = cursor.fetchall()
     if entry_show_ID.get().isnumeric() == True:
-       test2 = int(entry_show_ID.get())
-       test2_list=[]
-       test2_list.append(test2)
-       test2_tuple = tuple(test2_list)
-       bool_select2 = False
-       for value in values:
-           if sorted(test2_tuple) == sorted(value):
-               bool_select2 = True
-               break
-          
-
-
-    print_value = ''
-    for value in values:
-        print_value += "Platform/Username: " + str(value[0]) + ", " + "URL: " + str(value[1]) + ", " + "Password: " + str(value[2]) + "\n" + "ID Number: " + str(value[3]) + "\n"  
-
-    if entry_show_ID.get() == 0:
-        messagebox.showwarning("Warning", "Must complete all fields")
-    elif entry_show_ID.get().isalnumeric() == False:
-        messagebox.showwarning("Warning", "Input must be a positive integer")
-    elif bool_select2 == False:
-        messagebox.showwarning("Warning", "Record ID out of range")
-
-    global label_value
-    label_value = tk.Label(frame_5, text=print_value, pady=10, font=font2)
-    label_value.pack()
-
+        test2 = int(entry_show_ID.get())
+        test2_list=[]
+        test2_list.append(test2)
+        test2_tuple = tuple(test2_list)
+        bool2_select = False
+        for value in values:
+            if sorted(test2_tuple) == sorted(value):
+                bool2_select = True
+                break   
     cursor.close()
 
     connectivity.commit()
-    connectivity.close()
+    connectivity.close()        
+
+    if len(entry_show_ID.get()) == 0:
+        messagebox.showwarning("Warning", "Must complete all fields")
+    elif entry_show_ID.get().isnumeric() == False:
+        messagebox.showwarning("Warning", "Input must be a positive integer")
+    elif bool2_select == False:
+        messagebox.showwarning("Warning", "Record ID outside of range")
+    else:
+        connectivity = sqlite3.connect('Pass.db')
+
+        cursor = connectivity.cursor()
+
+        select = ("SELECT *, oid from Passes WHERE oid = " + entry_show_ID.get())
+        cursor.execute(select)
+        values2 = cursor.fetchall()
+        global label_value
+        print_value = ''
+        for value in values2:
+            print_value += "Platform/Username: " + str(value[0]) + ", " + "URL: " + str(value[1]) + ", " + "Password: " + str(value[2]) + "\n" + "ID Number: " + str(value[3]) + "\n"  
+        label_value = tk.Label(frame_5, text=print_value, pady=10, font=font2)
+        label_value.pack()
+
+        cursor.close()
+
+        connectivity.commit()
+        connectivity.close()
+        button_show_one['state'] = GUI.DISABLED
 
 
 def hide_one():
-    label_value.pack_forget()
     button_show_one['state'] = GUI.NORMAL
+    label_value.pack_forget()
 
 label_space2 = tk.Label(frame_5, text="    ", padx=64, pady=0, font=font2)
 label_space2.pack()
@@ -281,6 +331,5 @@ main_screen.resizable(False, False)
 raise_frame(frame_1)
 
 main_screen.mainloop()
-
 
 
