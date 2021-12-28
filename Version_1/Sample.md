@@ -1,3 +1,3 @@
-Added Login screen
-No encryption
+Added Login screen,
+No encryption,
 Completed
