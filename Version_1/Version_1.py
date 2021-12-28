@@ -10,7 +10,7 @@ from configparser import ConfigParser
 
 
 import os
-os.system("python Frame_1_module.py")
+os.system("python Main_Database.py")
 
 def raise_frame(frame):
     frame.tkraise()
@@ -45,7 +45,7 @@ for frame in (frame_67, frame_68, frame_69, frame_0, frame_1, frame_2, frame_3, 
     frame.grid(row=1, column=1, sticky='news')
 
 import os
-os.system("python Frame_69_module.py")
+os.system("python Password_Database.py")
 
 #MODULE 2 DTABASE FUNCTION
 
