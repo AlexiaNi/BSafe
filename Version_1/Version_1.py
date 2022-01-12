@@ -7,10 +7,16 @@ from tkinter import messagebox
 import sqlite3
 from PIL import *
 from configparser import ConfigParser
-
-
 import os
-os.system("python Main_Database.py")
+import hashlib
+from colorama import *
+
+#CHECK IF MAIN PASSWORD TABLE EXISTS 
+try:
+    os.system("python Password_Database.py")
+except:
+    print("Table exists")
+#END CHECK
 
 def raise_frame(frame):
     frame.tkraise()
@@ -44,8 +50,12 @@ main_screen.grid_columnconfigure(1, weight=1)
 for frame in (frame_67, frame_68, frame_69, frame_0, frame_1, frame_2, frame_3, frame_4, frame_5):
     frame.grid(row=1, column=1, sticky='news')
 
-import os
-os.system("python Password_Database.py")
+#CHECK IF MAIN PASSWORD TABLE EXISTS 
+try:
+    os.system("python Main_Database.py")
+except:
+    print("Table exists")
+#END CHECK
 
 #MODULE 2 DTABASE FUNCTION
 
@@ -79,14 +89,16 @@ def register():
 #FRAME 68 REGISTER SCREEN
 label_big = tk.Label(frame_68, text="Configure master password", font=font1).pack()
 label_enter = tk.Label(frame_68, text="Create new password: ", font=font2).pack()
-entry_enter = tk.Entry(frame_68, borderwidth=2.5, width=40)
+entry_enter = tk.Entry(frame_68, borderwidth=2.5, width=40, show='*')
 entry_enter.pack()
 label_2 = tk.Label(frame_68, text="Enter new password again: ", font=font2).pack()
-entry_2 = tk.Entry(frame_68, borderwidth=2.5, width=40)
+entry_2 = tk.Entry(frame_68, borderwidth=2.5, width=40, show='*')
 entry_2.pack()
 
 #FRAME 68 BUTTON FUNCTION
 def configure():
+    global hash_value
+    hash_value = hashlib.sha256(entry_enter.get().encode('utf-8')).hexdigest()
     connectivity = sqlite3.connect('Master.db')
     cursor = connectivity.cursor()
 
@@ -101,10 +113,15 @@ def configure():
         if question == 1:
             cursor.execute("INSERT INTO Master_password VALUES (:Password_1)",
             {
-                'Password_1': entry_enter.get()
+                'Password_1': hash_value
             }
             )
             raise_frame(frame_1)
+            import string    
+            import random 
+            ran = ''.join(random.choices(string.ascii_uppercase + string.digits, k = 10))    
+            randon_value = str(ran)
+            messagebox.showwarning("Backup key", "Attention! This is your one time password retrieval key. This data will not be saved. Once you reconfigure your password, this key will change:")
             messagebox.showinfo("Succes", "Master password successfully configured. I hope you enjoy the program!")
 
 
@@ -114,6 +131,8 @@ def configure():
 #FRAME 68
 button_register2 = tk.Button(frame_68, text="Configure password", pady=10, font=font2, width=20, command=configure).pack()
 
+def exit_2():
+    main_screen.destroy()
 
 #FRAME 69 LOGIN SCREEN
 label_password = tk.Label(frame_69, text="Master Window", font=font1)
@@ -122,8 +141,18 @@ button_login = tk.Button(frame_69, text="Verify password", pady=10, font=font2, 
 button_login.pack()
 button_register = tk.Button(frame_69, text="Register",padx=34, pady=10, font=font2, command=register)
 button_register.pack()
+button_exit2 = tk.Button(frame_69, text="Exit", padx=52, pady=10, font=font2, command=exit_2)
+button_exit2.pack()
+
+
+#FRAME 67
+label_verify = tk.Label(frame_67, text="Verify master password", font=font1).pack()
+label_enter2 = tk.Label(frame_67, text="Enter master password: ", font=font2).pack()
+entry_enter2 = tk.Entry(frame_67, borderwidth=2.5, width=40, show='*')
+entry_enter2.pack()
 
 def verify_2():
+    hash_value_2 = hashlib.sha256(entry_enter2.get().encode('utf-8')).hexdigest()
     connectivity = sqlite3.connect('Master.db')
     cursor = connectivity.cursor()
 
@@ -131,7 +160,7 @@ def verify_2():
         messagebox.showwarning("Warning", "Must complete all available fields")
     else:
         entry_copyl = []
-        entry_copyl.append(entry_enter2.get())
+        entry_copyl.append(hash_value_2)
         entry_copyt = tuple(entry_copyl)
 
         select_3 = """SELECT * from Master_password"""
@@ -146,13 +175,10 @@ def verify_2():
     connectivity.commit()
     connectivity.close()
 
-
-#FRAME 67
-label_verify = tk.Label(frame_67, text="Verify master password", font=font1).pack()
-label_enter2 = tk.Label(frame_67, text="Enter master password: ", font=font2).pack()
-entry_enter2 = tk.Entry(frame_67, borderwidth=2.5, width=40)
-entry_enter2.pack()
 button_enter = tk.Button(frame_67, text="Verify", pady=10, width=15, font=font2, command=verify_2).pack()
+button_back3 = tk.Button(frame_67, text="Back", pady=10, width=15, font=font2, command=lambda:raise_frame(frame_69))
+button_back3.pack()
+
 
 #parser = ConfigParser()
 #parser.read("dark_mode_settungs.ini")
@@ -193,15 +219,17 @@ button_on = tk.Button(frame_0, text="Off", font=font2, command=off).place(x=400,
 button_back0 = tk.Button(frame_0, text="Back to title screen", padx=10, pady=10, font=font2, command=lambda:raise_frame(frame_1)).place(x=300, y=150)
 
 #FRAME 1
+
 label_title = tk.Label(frame_1, text="Password Manager",padx=0, pady=10, font=font1)
 label_title.pack()
 button_menu = tk.Button(frame_1, text="Menu", padx=20,pady=10, font=font2, command=lambda:raise_frame(frame_2))
 button_menu.pack()
 button_settings = tk.Button(frame_1, text="Settings", padx=11, pady=10, font=font2, command=lambda:raise_frame(frame_0))
 button_settings.pack()
+button_reset = tk.Button(frame_1, text="Reset ptogram", font=font2, padx=10, pady=10)
+button_reset.pack()
 button_exit = tk.Button(frame_1, text="Exit", padx=28, pady=10, font=font2, command=exit_program)
 button_exit.pack()
-
 
 #FRAME 2
 label_1 = tk.Label(frame_2, text="Options", font=font1)
@@ -232,10 +260,10 @@ entry_URL.pack()
 
 label_pass = tk.Label(frame_3, text="Enter password: ", font=font2)
 label_pass.pack()
-entry_pass = tk.Entry(frame_3, borderwidth=2.5, width=40)
+entry_pass = tk.Entry(frame_3, borderwidth=2.5, width=40, show='*')
 entry_pass.pack()
 
-#DATABASE FUNCTION FRAME3 3
+#DATABASE FUNCTION FRAME 3
 def insert():
     connectivity = sqlite3.connect('Pass.db')
 
