@@ -1,0 +1,1 @@
+OOP approach, same encryption.
