@@ -49,10 +49,10 @@ class Frame_Login(tk.Frame):
         self.controller = controller
 
         def verify():
-            connectivity = sqlite3.connect('Master.db')
+            connectivity = sqlite3.connect('Master_2.db')
             cursor = connectivity.cursor()
 
-            cursor.execute("""SELECT *, oid from Master_password""")
+            cursor.execute("""SELECT *, oid from Master_password_2""")
             your_mom = cursor.fetchall()
             if len(your_mom)==0:
                 messagebox.showwarning("Warning", "Please configure master password")
@@ -64,10 +64,10 @@ class Frame_Login(tk.Frame):
             connectivity.close()
 
         def register():
-            connectivity = sqlite3.connect('Master.db')
+            connectivity = sqlite3.connect('Master_2.db')
             cursor = connectivity.cursor()
 
-            cursor.execute("""Select *, oid from Master_password""")
+            cursor.execute("""Select *, oid from Master_password_2""")
             your_mom2 = cursor.fetchall()
             if len (your_mom2)==0:
                  controller.show_frame("Frame_Register")
@@ -105,7 +105,7 @@ class Frame_Register(tk.Frame):
         def configure():
             global hash_value
             hash_value = hashlib.sha256(entry_enter.get().encode('utf-8')).hexdigest()
-            connectivity = sqlite3.connect('Master.db')
+            connectivity = sqlite3.connect('Master_2.db')
             cursor = connectivity.cursor()
 
             if len(entry_enter.get())==0 or len(entry_2.get())==0:
@@ -117,7 +117,7 @@ class Frame_Register(tk.Frame):
             else:
                 question = messagebox.askyesno("Proceed", "Are you sure you would like to preceed? The master password cannot be recovered or reset.")
             if question == 1:
-                cursor.execute("INSERT INTO Master_password VALUES (:Password_1)",
+                cursor.execute("INSERT INTO Master_password_2 VALUES (:Password_1)",
                 {
                     'Password_1': hash_value
                 }
@@ -149,7 +149,7 @@ class Frame_Verify(tk.Frame):
 
         def verify_2():
             hash_value_2 = hashlib.sha256(entry_enter2.get().encode('utf-8')).hexdigest()
-            connectivity = sqlite3.connect('Master.db')
+            connectivity = sqlite3.connect('Master_2.db')
             cursor = connectivity.cursor()
 
             if len(entry_enter2.get())==0:
@@ -159,7 +159,7 @@ class Frame_Verify(tk.Frame):
                 entry_copyl.append(hash_value_2)
                 entry_copyt = tuple(entry_copyl)
 
-                select_3 = """SELECT * from Master_password"""
+                select_3 = """SELECT * from Master_password_2"""
                 cursor.execute(select_3)
                 your_mom3 = cursor.fetchall()
                 for moms in your_mom3:
@@ -247,14 +247,14 @@ class Frame_3(tk.Frame):
         entry_pass.pack()
 
         def insert():
-            connectivity = sqlite3.connect('Pass.db')
+            connectivity = sqlite3.connect('Pass_2.db')
 
             cursor = connectivity.cursor()
  
             if len(entry_platform.get())==0 or len(entry_URL.get())==0 or len(entry_pass.get())==0:
                  messagebox.showwarning("Warning", "Must complete all available fields!")
             else:
-                 cursor.execute("INSERT INTO Passes VALUES (:Platform, :URL, :Password)",
+                 cursor.execute("INSERT INTO Passes_2 VALUES (:Platform, :URL, :Password)",
                      {
                          'Platform': entry_platform.get(),
                          'URL': entry_URL.get(),
@@ -285,11 +285,11 @@ class Frame_4(tk.Frame):
         self.controller = controller
 
         def show_records():
-            connectivity = sqlite3.connect('Pass.db')
+            connectivity = sqlite3.connect('Pass_2.db')
 
             cursor = connectivity.cursor()
 
-            select = """SELECT *, oid from Passes"""
+            select = """SELECT *, oid from Passes_2"""
             cursor.execute(select)
             values = cursor.fetchall()
             global label_show_records
@@ -304,11 +304,11 @@ class Frame_4(tk.Frame):
 
 
         def delete():
-            connectivity = sqlite3.connect('Pass.db')
+            connectivity = sqlite3.connect('Pass_2.db')
 
             cursor = connectivity.cursor()
 
-            select1 = """SELECT oid from Passes"""
+            select1 = """SELECT oid from Passes_2"""
             cursor.execute(select1)
             values1 = cursor.fetchall()
             if entry_select.get().isnumeric() == True:
@@ -391,12 +391,12 @@ class Frame_5(tk.Frame):
             frame_scrollbar2 = tk.Frame(canvas_scrollbar)
             canvas_scrollbar.create_window((0,0), window=frame_scrollbar2, anchor="nw")
 
-            connectivity = sqlite3.connect('Pass.db')
+            connectivity = sqlite3.connect('Pass_2.db')
 
             cursor = connectivity.cursor()
 
     
-            select_all = """SELECT *, oid from Passes"""
+            select_all = """SELECT *, oid from Passes_2"""
             cursor.execute(select_all)
             values3 = cursor.fetchall()
 
@@ -413,11 +413,11 @@ class Frame_5(tk.Frame):
 
             global label_value
         def show_one():
-            connectivity = sqlite3.connect('Pass.db')
+            connectivity = sqlite3.connect('Pass_2.db')
 
             cursor = connectivity.cursor()
 
-            select_copy = """SELECT oid from Passes"""
+            select_copy = """SELECT oid from Passes_2"""
             cursor.execute(select_copy)
             values = cursor.fetchall()
             if entry_show_ID.get().isnumeric() == True:
@@ -442,11 +442,11 @@ class Frame_5(tk.Frame):
                 elif bool2_select == False:
                     messagebox.showwarning("Warning", "Record ID outside of range")
                 else:
-                    connectivity = sqlite3.connect('Pass.db')
+                    connectivity = sqlite3.connect('Pass_2.db')
 
                     cursor = connectivity.cursor()
 
-                    select = ("SELECT *, oid from Passes WHERE oid = " + entry_show_ID.get())
+                    select = ("SELECT *, oid from Passes_2 WHERE oid = " + entry_show_ID.get())
                     cursor.execute(select)
                     values2 = cursor.fetchall()
                     global label_value
