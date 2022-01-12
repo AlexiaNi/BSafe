@@ -11,8 +11,8 @@ import os
 import hashlib
 
 
-os.system("python Password_Database.py")
-os.system("python Main_Database.py")
+os.system("python Password_Database_2.py")
+os.system("python Main_Database_2.py")
 
 class Application(tk.Tk):
 
