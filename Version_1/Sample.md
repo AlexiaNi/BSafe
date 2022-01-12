@@ -1,3 +1,3 @@
 Added Login screen,
-No encryption,
+One-way encryption (hash) on Pass.db,
 Completed
