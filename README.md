@@ -14,8 +14,6 @@ Same settings as Version_1. Recommended.
 
 To be added:
 (ttk) Theme and Style,
-Two_way encryption on Master_Database,
-Executable file,
 Better database management,
 Other fixes
 
