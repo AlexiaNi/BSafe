@@ -17,3 +17,11 @@ To be added:
 Better database management,
 Other fixes
 
+
+Modules to import:
+Tkinter
+Sqlite3
+hashlib
+webbrowser
+PIL
+os
