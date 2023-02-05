@@ -24,10 +24,10 @@ Password Manager using Tkinter GUI in Python - YH4F
      - Python 3.+
     Modules to import:
      - Tkinter
-     - hashlin
+     - hashlib
      - webbrowser
      - PIL
-     - sqlite
+     - sqlite3
      
     Install in terminal using "pip install <module name>"
     !!! Database not yet ecrypted !!!
