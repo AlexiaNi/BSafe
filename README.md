@@ -29,5 +29,5 @@ Password Manager using Tkinter GUI in Python - YH4F
      - PIL
      - sqlite3
      
-    Install in terminal using "pip install <module name>"
+    Install by terminal using "pip install <module name>"
     !!! Database not yet ecrypted !!!
