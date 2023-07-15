@@ -1,0 +1,6 @@
+PIL  
+tkinter  
+sqlite3  
+hashlib  
+os  
+configparser  
