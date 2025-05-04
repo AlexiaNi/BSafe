@@ -331,7 +331,7 @@ class Frame_4(tk.Frame):
             elif bool_select == False:
                  messagebox.showwarning("Warning", "Record ID outside of range")
             else:
-                 delete = "DELETE from Passes WHERE oid= " + entry_select.get()
+                 delete = "DELETE from Passes_2 WHERE oid= " + entry_select.get()
                  cursor.execute(delete)
                  messagebox.showinfo("Info", "Record successfully deleted")
 
@@ -378,7 +378,6 @@ class Frame_5(tk.Frame):
             top.geometry("1000x400")
             top.resizable(False, False)
             top.title("All records")
-            top.iconbitmap('bunny.ico')
 
             frame_scrollbar = tk.Frame(top)
             frame_scrollbar.pack(fill=BOTH, expand=1)
@@ -391,7 +390,7 @@ class Frame_5(tk.Frame):
             frame_scrollbar2 = tk.Frame(canvas_scrollbar)
             canvas_scrollbar.create_window((0,0), window=frame_scrollbar2, anchor="nw")
 
-            connectivity = sqlite3.connect('Pass_2.db')
+            connectivity = sqlite3.connect('Passes_2.db')
 
             cursor = connectivity.cursor()
 
@@ -490,8 +489,7 @@ class Frame_5(tk.Frame):
 if __name__ == "__main__":
     app = Application()
     app.title("Password Manager")
-    app.iconbitmap('bunny.ico')
     app.geometry('750x500')
+    app.iconbitmap()
     app.resizable(False, False)
     app.mainloop()
-
